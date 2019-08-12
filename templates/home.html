@@ -1,0 +1,58 @@
+
+{% extends "base.html" %}
+
+{% block head %}
+
+<style>
+
+    .main-button {
+
+        margin-bottom: 20px;
+    }
+
+    .above-bottom-col {
+
+        margin-left: 2%;
+    }
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="flex-container" style="height: 90%; background-color: rgb(255, 255, 185);">
+    <div class="container-fluid" style="margin: auto;">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md column-centered">
+                <button type="button" class="btn btn-primary main-button" >Ideias</button>
+            </div>
+            <div class="col-md column-centered">
+                <button type="button" class="btn btn-primary main-button">Problemas e soluções</button>
+            </div>
+            <div class="col-md column-centered">
+                <button type="button" class="btn btn-primary main-button">Mentoria</button>
+            </div>
+        </div>
+        <div class="row justify-content-center align-items-top">
+            <div class="col-md above-bottom-col">
+                <li>Possibilidade de escolher uma ideia e investir</li>
+                <li>Realizar investimentos</li>
+                <li>Apresentar ideias</li>
+            </div>
+            <div class="col-md above-bottom-col">
+                <li>Postar dúvidas sobre o empreendimento</li>
+                <li>Relatar problemas em busca de uma solução</li>
+                <li>Buscar soluções em problemas similares</li>
+                <li>Ajudar na solução de problemas</li>
+                <li>Esclarecer dúvidas</li>
+            </div>
+            <div class="col-md above-bottom-col">
+                <li>Mentorar</li>
+                <li>Receber mentoria</li>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
