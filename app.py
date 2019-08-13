@@ -24,14 +24,22 @@ def do_logout():
     session['user'] = None
     return 'logout'
 
+@app.route('/ideas', methods=['GET'])
+def ideas_page():
+    user = session.get('user')
+    if user is None:
+        session['login_return_url'] = url_for('ideas_page')
+        return redirect(url_for('login_page'))
+
+    ideas = [('User1', 'Ideia1', None),
+             ('User2', 'Ideia2', None),
+             ('User3', 'Ideia3', None),
+             ('User4', 'Ideia4', None)]
+
+    return render_template('ideas.html', ideas=ideas)
+
 @app.route('/')
 def home_page():
-
-    user = session.get('user')
-    #if user is None:
-        #session['login_return_url'] = url_for('home_page')
-        #return redirect(url_for('login_page'))
-
     return render_template('home.html')
 
 if __name__ == '__main__':

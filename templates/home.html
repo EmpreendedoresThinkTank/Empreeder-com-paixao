@@ -1,5 +1,5 @@
 
-{% extends "base.html" %}
+{% extends "fullwindowbase.html" %}
 
 {% block head %}
 
@@ -19,19 +19,23 @@
 
 {% endblock %}
 
-{% block content %}
+{% block window_content %}
 
-<div class="flex-container" style="height: 90%; background-color: rgb(255, 255, 185);">
-    <div class="container-fluid" style="margin: auto;">
+    <div class="container-fluid" style="margin-top: 7%">
+        <div class="row justify-content-center align-items-center" style="margin-bottom: 7%;">
+            <div class="col-md column-centered">
+                <h1>Qual função deseja usar?</h1>
+            </div>
+        </div>
         <div class="row justify-content-center align-items-center">
             <div class="col-md column-centered">
-                <button type="button" class="btn btn-primary main-button" >Ideias</button>
+                <a type="button" class="btn btn-primary main-button" href="/ideas">Ideias</a>
             </div>
             <div class="col-md column-centered">
-                <button type="button" class="btn btn-primary main-button">Problemas e soluções</button>
+                <a type="button" class="btn btn-primary main-button" href=".">Problemas e soluções</a>
             </div>
             <div class="col-md column-centered">
-                <button type="button" class="btn btn-primary main-button">Mentoria</button>
+                <a type="button" class="btn btn-primary main-button" href=".">Mentoria</a>
             </div>
         </div>
         <div class="row justify-content-center align-items-top">
@@ -53,6 +57,5 @@
             </div>
         </div>
     </div>
-</div>
 
 {% endblock %}

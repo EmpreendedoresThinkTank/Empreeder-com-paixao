@@ -1,11 +1,10 @@
 
-{% extends "base.html" %}
+{% extends "fullwindowbase.html" %}
 
-{% block content %}
+{% block window_content %}
 
-<div class="flex-container" style="height: 90%; background-color: rgb(255, 255, 185);">
-    <form method='post' style="margin: auto;">
-        <div class="container-fluid" style="margin: auto;">
+    <form method='post'>
+        <div class="container-fluid" style="margin-top: 10%;">
             <div class="row justify-content-center align-items-center" style="margin-bottom: 4%">
                 <div class="col-md column-centered">
                     <h1>Login Page</h1>
@@ -23,11 +22,10 @@
             </div>
             <div class="row justify-content-center align-items-center">
                 <div class="col-md column-centered">
-                    <input type="submit" value="sign in" style="width: 100%; background-color: white;">
+                    <input type="submit" value="sign in" style="background-color: white;">
                 </div>
             </div>
         </div>
     </form>
-</div>
 
 {% endblock %}
