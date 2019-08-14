@@ -5,6 +5,25 @@ import secrets
 
 from flask import Flask, render_template, session, redirect, url_for, request
 
+SAMPLE_IDEAS = [(0, 'User1', 'Ideia1',
+                 '''
+1word word word word word word word word word word word word word word word word word word word word word
+    2word word word word word word word word word word word word word word word word word word word word word
+3word word word word word word word word word word word word word word word word word word word word word
+                 '''),
+                (1, 'User2', 'Ideia2',
+                 ('word word word word word word word word word word word word word word word '
+                  'word word word word word word word word word word word word word word word '
+                  'word word word word word word word word word word word word word word word '
+                  'word word word word word word word word word word word word word word word '
+                  'word word word word word word word word word word word word word word word '
+                  'word word word word word word word word word word word word word word word '
+                  'word word word word word word word word word word word word word word word '
+                  'word word word word word word word word word word word word word word word\n'
+                  'word word word word word word word word word word word word word word word ')),
+                (2, 'User3', 'Ideia3', ''),
+                (3, 'User4', 'Ideia4', '')]
+
 app = Flask(__name__)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -31,12 +50,17 @@ def ideas_page():
         session['login_return_url'] = url_for('ideas_page')
         return redirect(url_for('login_page'))
 
-    ideas = [('User1', 'Ideia1', None),
-             ('User2', 'Ideia2', None),
-             ('User3', 'Ideia3', None),
-             ('User4', 'Ideia4', None)]
+    return render_template('ideas.html', ideas=SAMPLE_IDEAS)
 
-    return render_template('ideas.html', ideas=ideas)
+@app.route('/idea/<int:idea_id>')
+def single_idea_page(idea_id):
+
+    for idea in SAMPLE_IDEAS:
+
+        if idea[0] == idea_id:
+            return render_template('singleidea.html', idea=idea)
+
+    return 'Invalid', 401
 
 @app.route('/')
 def home_page():

@@ -5,7 +5,7 @@
 
     <ul class="list-group" style="margin-top: 3%">
 
-        {% for user, subject, _ in ideas %}
+        {% for id, user, subject, _ in ideas %}
             <li class="list-group-item d-flex justify-content-between align-items-center" style="padding: 0 0 0 0; margin: 0 5% 0 5%;">
                 <font color="#B60" style="margin-left: 2%">{{ subject }}</font>
                 <ul class="list-group list-group-horizontal" style="padding: 0 0 0 0; margin: 0 0 0 0; ">
@@ -13,7 +13,7 @@
                         <a href="." style="text-align: middle;"><font size=2>{{ user }}</font></a>
                     </li>
                     <li class="list-group-item" style="padding: 0 0 0 0; margin: 0 0 0 0; border-style: none;">
-                        <a type="button" class="btn btn-primary main-button" style="margin: 0 0 0 0;" href=".">
+                        <a type="button" class="btn btn-primary main-button" style="margin: 0 0 0 0;" href="{{ url_for('single_idea_page', idea_id=id) }}">
                             Ver
                         </a>
                     </li>
