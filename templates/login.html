@@ -25,6 +25,13 @@
                     <input type="submit" value="sign in" style="background-color: white;">
                 </div>
             </div>
+            {% if error %}
+                <div class="row justify-content-center align-items-center" style="margin-top: 3%">
+                    <div class="col-md column-centered">
+                        <p><font color="red">Invalid username or password</font></p>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </form>
 

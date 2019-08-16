@@ -60,18 +60,18 @@ def login_page():
         user_info = result.first()
 
         if user_info is None:
-            return 'Failed', 400
+            return render_template('login.html', error=True)
 
         password_hash = user_info[result.keys().index('password_hash')]
 
         if hashlib.md5(password.encode()).hexdigest() != password_hash:
-            return 'Failed', 400
+            return render_template('login.html', error=True)
 
         session['user'] = username
 
         return redirect(session.get('login_return_url') or url_for('home_page'))
 
-    return render_template('login.html')
+    return render_template('login.html', error=False)
 
 @app.route('/session_action/logout', methods=['POST'])
 def do_logout():
@@ -88,7 +88,24 @@ def ideas_page():
 
     return render_template('ideas.html', ideas=SAMPLE_IDEAS)
 
-@app.route('/idea/<int:idea_id>')
+@app.route('/ideas/new', methods=['GET', 'POST'])
+def create_idea_page():
+
+    if request.method == 'POST':
+
+        SAMPLE_IDEAS.append((SAMPLE_IDEAS[-1][0] + 1, session.get('user'),
+                             request.form['idea-title'], request.form['idea-content']))
+
+        return redirect(url_for('ideas_page'))
+
+    user = session.get('user')
+    if user is None:
+        session['login_return_url'] = url_for('create_idea_page')
+        return redirect(url_for('login_page'))
+
+    return render_template('create_idea.html')
+
+@app.route('/ideas/<int:idea_id>')
 def single_idea_page(idea_id):
 
     for idea in SAMPLE_IDEAS:

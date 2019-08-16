@@ -1,0 +1,29 @@
+
+{% extends "fullwindowbase.html" %}
+
+{% block window_content %}
+
+    <form method='post'>
+        <div class="container-fluid" style="margin-top: 2%;">
+            <div class="row justify-content-center align-items-center" style="margin-bottom: 1%">
+                <div class="col-md-0">
+                    <h2 style="margin-right: 30px;">Titulo da ideia:</h2>
+                </div>
+                <div class="col-md-0">
+                    <input type="text" name="idea-title" required>
+                </div>
+            </div>
+            <div class="row justify-content-center align-items-center" style="margin-bottom: 2%">
+                <div class="col-md column-centered">
+                    <textarea name="idea-content" rows="10" cols="100" style="resize: none;" required></textarea>
+                </div>
+            </div>
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md column-centered">
+                    <input type="submit" value="Submeter ideia">
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
