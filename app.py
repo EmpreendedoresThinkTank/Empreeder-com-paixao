@@ -5,6 +5,10 @@ import secrets
 
 from flask import Flask, render_template, session, redirect, url_for, request
 
+import sqlalchemy
+
+import hashlib
+
 SAMPLE_IDEAS = [(0, 'User1', 'Ideia1',
                  '''
 1word word word word word word word word word word word word word word word word word word word word word
@@ -25,6 +29,18 @@ SAMPLE_IDEAS = [(0, 'User1', 'Ideia1',
                 (3, 'User4', 'Ideia4', '')]
 
 app = Flask(__name__)
+sql_engine = sqlalchemy.create_engine('sqlite:///app.sqlite')
+sql_metadata = sqlalchemy.MetaData()
+
+users_table = sqlalchemy.Table('users', sql_metadata,
+                               sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True),
+                               sqlalchemy.Column('name', sqlalchemy.VARCHAR(length=64), unique=True),
+                               sqlalchemy.Column('password_hash', sqlalchemy.VARCHAR(length=256)))
+
+def setup_database():
+
+    if not sql_engine.dialect.has_table(sql_engine, 'users'):
+        sql_metadata.create_all(sql_engine)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
@@ -32,7 +48,26 @@ def login_page():
     if request.method == 'POST':
 
         session.permanent = True
-        session['user'] = request.form['user']
+        username = request.form['user']
+        password = request.form['pass']
+
+        sql_connection = sql_engine.connect()
+
+        query = users_table.select().where(sqlalchemy.text(f'name = \'{username}\''))
+
+        result = sql_connection.execute(query)
+
+        user_info = result.first()
+
+        if user_info is None:
+            return 'Failed', 400
+
+        password_hash = user_info[result.keys().index('password_hash')]
+
+        if hashlib.md5(password.encode()).hexdigest() != password_hash:
+            return 'Failed', 400
+
+        session['user'] = username
 
         return redirect(session.get('login_return_url') or url_for('home_page'))
 
@@ -40,6 +75,7 @@ def login_page():
 
 @app.route('/session_action/logout', methods=['POST'])
 def do_logout():
+
     session['user'] = None
     return 'logout'
 
@@ -67,6 +103,8 @@ def home_page():
     return render_template('home.html')
 
 if __name__ == '__main__':
+
+    setup_database()
 
     app.permanent_session_lifetime =  timedelta(minutes=20)
     app.secret_key = secrets.token_bytes(8)
