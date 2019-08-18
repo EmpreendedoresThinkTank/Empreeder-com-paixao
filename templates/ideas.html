@@ -3,6 +3,15 @@
 
 {% block head %}
 
+<script>
+
+    function deleteIdeaOnClick(idea_id) {
+
+        axios.post("{{ url_for('do_delete_idea', idea_id='-1') }}".replace('-1', idea_id), {}).then(function() { location.reload() })
+    }
+
+</script>
+
 <style>
 
     #new-idea-button {
@@ -23,19 +32,29 @@
 
     <a id="new-idea-button" type="button" class="btn btn-primary" href="/ideas/new">Nova Ideia</a>
 
-    <ul class="list-group" style="margin-top: 3%">
+    <ul class="list-group" style="margin-top: 3%; margin-bottom: 5%;">
 
         {% for id, user, subject, _ in ideas %}
             <li class="list-group-item d-flex justify-content-between align-items-center" style="padding: 0 0 0 0; margin: 0 5% 0 5%;">
                 <font color="#B60" style="margin-left: 2%">{{ subject }}</font>
                 <ul class="list-group list-group-horizontal" style="padding: 0 0 0 0; margin: 0 0 0 0; ">
-                    <li class="list-group-item" style="padding: 0 0 0 0; margin: 5% 20px 5% 0; border-style: none;">
+                    <li class="list-group-item" style="padding: 0 0 0 0; margin: 3.5% 20px 0 0; border-style: none;">
                         <a href="." style="text-align: middle;"><font size=2>{{ user }}</font></a>
                     </li>
                     <li class="list-group-item" style="padding: 0 0 0 0; margin: 0 0 0 0; border-style: none;">
                         <a type="button" class="btn btn-primary" style="margin: 0 0 0 0;" href="{{ url_for('single_idea_page', idea_id=id) }}">
                             Ver
                         </a>
+                    </li>
+                    <li class="list-group-item" style="padding: 0 0 0 0; margin: 0 0 0 0; border-style: none;">
+                        <button
+                            type="button"
+                            class="btn btn-danger"
+                            {% if user != session.user %}disabled{% endif %}
+                            onclick="deleteIdeaOnClick({{ id }});"
+                            style="margin: 0 3px 0 0;">
+                            X
+                        </button>
                     </li>
                 </ul>
             </li>

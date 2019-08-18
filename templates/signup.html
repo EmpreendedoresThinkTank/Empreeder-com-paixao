@@ -1,0 +1,31 @@
+
+{% extends "fullwindowbase.html" %}
+
+{% block window_content %}
+
+    <form method='post'>
+        <div class="container-fluid" style="margin-top: 10%;">
+            <div class="row justify-content-center align-items-center" style="margin-bottom: 4%">
+                <div class="col-md column-centered">
+                    <h1>Cadastro</h1>
+                </div>
+            </div>
+            <div class="row justify-content-center align-items-center" style="margin-bottom: 1%">
+                <div class="col-md column-centered">
+                    <input type="text" name="user" required>
+                </div>
+            </div>
+            <div class="row justify-content-center align-items-center" style="margin-bottom: 2%">
+                <div class="col-md column-centered">
+                    <input type="password" name="pass" required>
+                </div>
+            </div>
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md column-centered">
+                    <input type="submit" value="sign in" style="background-color: white;">
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

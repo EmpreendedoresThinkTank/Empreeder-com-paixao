@@ -21,7 +21,7 @@ users_table = sqlalchemy.Table('users', sql_metadata,
 ideas_table = sqlalchemy.Table('ideas', sql_metadata,
                                sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True),
                                sqlalchemy.Column('user', sqlalchemy.Integer),
-                               sqlalchemy.Column('title', sqlalchemy.VARCHAR(length=64), unique=True),
+                               sqlalchemy.Column('title', sqlalchemy.VARCHAR(length=64)),
                                sqlalchemy.Column('content', sqlalchemy.Text()))
 
 sql_metadata.create_all(sql_engine)
@@ -31,7 +31,6 @@ def login_page():
 
     if request.method == 'POST':
 
-        session.permanent = True
         username = request.form['user']
         password = request.form['pass']
 
@@ -51,12 +50,36 @@ def login_page():
         if hashlib.md5(password.encode()).hexdigest() != password_hash:
             return render_template('login.html', error=True)
 
+        session.permanent = True
         session['user'] = username
         session['user_id'] = user_info[result.keys().index('id')]
 
         return redirect(session.get('login_return_url') or url_for('home_page'))
 
     return render_template('login.html', error=False)
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup_page():
+
+    if request.method == 'POST':
+
+        username = request.form['user']
+        password = request.form['pass']
+
+        sql_connection = sql_engine.connect()
+
+        query = users_table.insert().values(name=username,
+                                            password_hash=hashlib.md5(password.encode()).hexdigest())
+
+        result = sql_connection.execute(query)
+
+        session.permanent = True
+        session['user'] = username
+        session['user_id'] = result.inserted_primary_key
+
+        return redirect(url_for('home_page'))
+
+    return render_template('signup.html')
 
 @app.route('/session_action/logout', methods=['POST'])
 def do_logout():
@@ -118,6 +141,28 @@ def create_idea_page():
         return redirect(url_for('login_page'))
 
     return render_template('create_idea.html')
+
+@app.route('/session_action/ideas/delete/<int:idea_id>', methods=['POST'])
+def do_delete_idea(idea_id):
+
+    sql_connection = sql_engine.connect()
+
+    query = ideas_table.select().where(sqlalchemy.text(f'id = {idea_id}'))
+
+    result = sql_connection.execute(query)
+
+    idea_info = result.first()
+    if idea_info is None:
+        return 'Invalid', 401
+
+    if idea_info[result.keys().index('user')] != session['user_id']:
+        return 'Invalid', 401
+
+    query = ideas_table.delete().where(sqlalchemy.text(f'id = {idea_id}'))
+
+    sql_connection.execute(query)
+
+    return 'deleted'
 
 @app.route('/ideas/<int:idea_id>')
 def single_idea_page(idea_id):
