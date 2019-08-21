@@ -200,7 +200,16 @@ def single_idea_page(idea_id):
 
 @app.route('/')
 def home_page():
-    return render_template('home.html')
+
+    all_buttons_info = (('lamp_symbol.png', ('POSTAR UMA IDEIA',), url_for('create_idea_page')),
+                        ('money_symbol.png', ('INVESTIR EM UMA IDEIA',), url_for('ideas_page')),
+                        ('heart_symbol.png', ('POSTAR UMA DOR',), '.'),
+                        ('puzzle_symbol.png', ('SOLUCIONAR UMA DOR',), '.'),
+                        ('two_people_symbol.png', ('MENTORIA OU MENTORAR',), '.'),
+                        ('files_symbol.png', ('ARTIGOS E DOCUMENTOS',), '.'),
+                        ('blog_symbol.png', ('BLOG DOS', 'EMPREENDEDORES'), '.'))
+
+    return render_template('home.html', all_buttons_info=all_buttons_info)
 
 if __name__ == '__main__':
 
